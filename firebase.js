@@ -1,9 +1,10 @@
-// Import the functions you need from the SDKs you need
+
+// AsyncStorage : like localStorage in web browsers , it saves data permanently on the phone even when the app is closed
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"; // ← handles login/register
+import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore"; // ← handles database
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,8 +16,10 @@ const firebaseConfig = {
   appId: "1:432810044610:web:261ae96e7bb98bb9c19f5b"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);   // ← makes auth usable in any screen
-export const db = getFirestore(app); // ← makes database usable in any screen
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
+
+export const db = getFirestore(app);
